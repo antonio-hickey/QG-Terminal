@@ -627,7 +627,7 @@ def update_graph_live(n):
         "uirevision"
     ] = "The User is always right"  # Ensures zoom on graph is the same on updat
     fig["layout"]["xaxis"]["rangeslider"]["visible"] = False
-    fig["layout"]["yaxis"]["range"] = [min(gOI_data['Call Gamma OI']),max(gOI_data['Call Gamma OI'])]
+    fig["layout"]["yaxis"]["range"] = [min(gOI_data['Put Gamma OI']),max(gOI_data['Put Gamma OI'])]
     fig["layout"]["margin"] = {"t": 50, "l": 50, "b": 50, "r": 25}
     fig["layout"]["autosize"] = True
     fig["layout"]["height"] = 400
