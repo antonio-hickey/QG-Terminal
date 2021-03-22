@@ -854,8 +854,9 @@ margin-left: 25%;
 }
 
 .SOMA{
-  display: block;
-  margin-left: 450px;
+  display: inline-block;
+  margin-left: 50px;
+  margin-top: -25px;
 }
 
 .USTC-Chart{
