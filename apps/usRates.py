@@ -211,6 +211,8 @@ def output_text(value):
         return dcc.Location(id="USTCurve",pathname='/apps/USTCurve')
     if value == "/portfolio":
         return dcc.Location(id="portfolio",pathname='/apps/porfolio')
+    if value == "/soma":
+    	return dcc.Location(id="soma",pathname='/apps/soma')
     if value == None:
         print('Enter Command in searchbar')
     else:

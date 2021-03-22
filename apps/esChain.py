@@ -706,6 +706,8 @@ def output_text(value):
         return dcc.Location(id="usRates",pathname='/apps/usRates')
     if value == "/portfolio":
         return dcc.Location(id="portfolio",pathname='/apps/portfolio')
+    if value == "/soma":
+    	return dcc.Location(id="soma",pathname='/apps/soma')
     if value == None:
         print('Enter Command in searchbar')
     else:

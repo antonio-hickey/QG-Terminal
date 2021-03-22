@@ -162,12 +162,12 @@ def output_text(value):
         return dcc.Location(id="USTCurve",pathname='/apps/USTCurve')
     if value == "/portfolio":
         return dcc.Location(id="portfolio",pathname='/apps/porfolio')
+    if value == "/soma":
+    	return "Already on soma page"
     if value == None:
         print('Enter Command in searchbar')
     else:
         print('incorrect command!')
-    print(value)
-    return value
 
 # Callback to update live clock
 @app.callback(Output("live_clock4", "children"), [Input("interval", "n_intervals")])
