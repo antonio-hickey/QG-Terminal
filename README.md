@@ -1,5 +1,5 @@
 # QG-Terminal
-An open source finance/trading dashboard, By defualt this project is tailored to fit my own personal needs for keeping up with financial markets. This platform is mainly python and CSS, making it very easy to customize it to suit your own personal desired use with a little python and web knowledge.
+An open source finance/trading dashboard, By defualt this project is tailored to fit my own personal needs for keeping up with financial markets. This platform is mainly python and CSS, making it very easy to customize it to suit your own desired use with little python and web knowledge.
 
 # Data
 You have to source your own market data as it's expensive :( and this is a free project. 
