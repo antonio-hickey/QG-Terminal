@@ -5,7 +5,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 from app import app
-from apps import home, esChain, usRates, portfolio
+from apps import home, esChain, usRates, portfolio, soma
 #------------------------------------
 # Layout                            #
 #------------------------------------
@@ -27,6 +27,8 @@ def display_page(pathname):
         return usRates.layout
     elif pathname == '/apps/portfolio':
         return portfolio.layout
+    elif pathname == '/apps/soma':
+    	return soma.layout
     else:
         return '404'
 #------------------------------------
