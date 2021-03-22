@@ -616,10 +616,13 @@ def update_graph_live(n):
 @app.callback(Output('live-update-graph2', 'figure'),
               [Input('interval-component', 'n_intervals')])
 def update_graph_live(n):
+    #-------------------------------------------------------------------------------------------------------------------------------
+    # Data
     PATH = pathlib.Path(__file__).parent
     DATA_PATH = PATH.joinpath("data").resolve()
-    # Loading historical tick data
     gOI_data = pd.read_csv(DATA_PATH.joinpath("GammaOI.csv"))
+    #-------------------------------------------------------------------------------------------------------------------------------
+    # Creating figure
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=gOI_data['Strike'],y=gOI_data['Call Gamma OI'],fill='tozeroy',line_color='#5c8cbe',name="Call"))
     fig.add_trace(go.Scatter(x=gOI_data['Strike'],y=gOI_data['Put Gamma OI'],fill='tozeroy',line_color='#810f7c',name="Put"))
@@ -627,7 +630,13 @@ def update_graph_live(n):
         "uirevision"
     ] = "The User is always right"  # Ensures zoom on graph is the same on updat
     fig["layout"]["xaxis"]["rangeslider"]["visible"] = False
-    fig["layout"]["yaxis"]["range"] = [min(gOI_data['Put Gamma OI']),max(gOI_data['Put Gamma OI'])]
+    #-------------------------------------------------------------------------------------------------------------------------------
+    # conditional statement to scale y-axis by largest
+    if max(gOI_data['Call Gamma OI']) > max(gOI_data['Put Gamma OI']):
+    	fig["layout"]["yaxis"]["range"] = [min(gOI_data['Call Gamma OI']),max(gOI_data['Call Gamma OI'])]
+    else:
+    	fig["layout"]["yaxis"]["range"] = [min(gOI_data['Put Gamma OI']),max(gOI_data['Put Gamma OI'])]
+    #-------------------------------------------------------------------------------------------------------------------------------
     fig["layout"]["margin"] = {"t": 50, "l": 50, "b": 50, "r": 25}
     fig["layout"]["autosize"] = True
     fig["layout"]["height"] = 400
@@ -646,7 +655,6 @@ def update_graph_live(n):
     fig.update_layout(title_text='Gamma Open Interest',title_x=0.5,title_font_color='#87B4E5',
                 yaxis=dict(color='#87B4E5'),xaxis=dict(color='#87B4E5'))
     return fig
-
 # Callback to update Last Price Graph
 @app.callback(Output('live-update-graph', 'figure'),
               [Input('interval-component', 'n_intervals')])
