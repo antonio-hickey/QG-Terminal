@@ -42,7 +42,7 @@ for row in range(n_rows):
     r.append([c1,c2,c3])
 #--------------------------------------------------------------------------------------------------------
 # Columns
-columns = ["Operation Date","Security","Max Purchase Size"]
+columns = ["Date","Security","Max Purchase Size"]
 #--------------------------------------------------------------------------------------------------------
 # Export Dataset
 filename = "schedule.csv" # Export As
@@ -52,3 +52,5 @@ with open(filename,'w') as csvfile:
     for row in r:
         csvwriter.writerow(row)
 #--------------------------------------------------------------------------------------------------------
+# Quit Driver
+driver.quit()

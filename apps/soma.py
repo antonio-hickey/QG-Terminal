@@ -20,12 +20,63 @@ from dash.dependencies import Input, Output, State
 from plotly import tools
 from app import app
 
+# Data Route
+PATH = pathlib.Path(__file__).parent
+DATA_PATH = PATH.joinpath("data").resolve()
 
+#------------------------------------
+# Asset Purchase Schedule Dataset   #
+#------------------------------------
+df_AP_S = pd.read_csv(DATA_PATH.joinpath('schedule.csv'))
+df_AP_S = df_AP_S.replace('\n','',regex=True)
+#df_AP_S.set_index('Date')
+#------------------------------------
+# Dates of the week
+weekday_n = datetime.datetime.today().weekday()
+today = datetime.datetime.today().strftime('%m/%d/%y').lstrip("0").replace("0",'')                                       # Today
+if weekday_n == 0:                                                                                                       # If today is monday
+    weekday1 = (datetime.datetime.today() + datetime.timedelta(days=1)).strftime('%m/%d/%y').lstrip("0").replace("0","") # Tuesday
+    weekday2 = (datetime.datetime.today() + datetime.timedelta(days=2)).strftime('%m/%d/%y').lstrip("0").replace("0","") # Wednesday 
+    weekday3 = (datetime.datetime.today() + datetime.timedelta(days=3)).strftime('%m/%d/%y').lstrip("0").replace("0","") # Thrusday
+    weekday4 = (datetime.datetime.today() + datetime.timedelta(days=4)).strftime('%m/%d/%y').lstrip("0").replace("0","") # Friday
+    week_l = [today, weekday1,weekday2,weekday3,weekday4] # List of dates this week
+
+if weekday_n == 1:                                                                                                       # If today is tuesday
+    weekday1 = (datetime.datetime.today() - datetime.timedelta(days=1)).strftime('%m/%d/%y').lstrip("0").replace("0","") # Monday
+    weekday2 = (datetime.datetime.today() + datetime.timedelta(days=1)).strftime('%m/%d/%y').lstrip("0").replace("0","") # Wednesday 
+    weekday3 = (datetime.datetime.today() + datetime.timedelta(days=2)).strftime('%m/%d/%y').lstrip("0").replace("0","") # Thrusday
+    weekday4 = (datetime.datetime.today() + datetime.timedelta(days=3)).strftime('%m/%d/%y').lstrip("0").replace("0","") # Friday
+    week_l = [weekday1,today,weekday2,weekday3,weekday4] # List of dates this week
+
+if weekday_n == 2:                                                                                                       # If today is wednesday
+    weekday1 = (datetime.datetime.today() - datetime.timedelta(days=2)).strftime('%m/%d/%y').lstrip("0").replace("0","") # Monday
+    weekday2 = (datetime.datetime.today() - datetime.timedelta(days=1)).strftime('%m/%d/%y').lstrip("0").replace("0","") # Tuesday
+    weekday3 = (datetime.datetime.today() + datetime.timedelta(days=1)).strftime('%m/%d/%y').lstrip("0").replace("0","") # Thrusday
+    weekday4 = (datetime.datetime.today() + datetime.timedelta(days=2)).strftime('%m/%d/%y').lstrip("0").replace("0","") # Friday
+    week_l = [weekday1,weekday2,today,weekday3,weekday4] # List of dates this week
+if weekday_n == 3:                                                                                                       # If today is thurday
+    weekday1 = (datetime.datetime.today() - datetime.timedelta(days=3)).strftime('%m/%d/%y').lstrip("0").replace("0","") # Monday
+    weekday2 = (datetime.datetime.today() - datetime.timedelta(days=2)).strftime('%m/%d/%y').lstrip("0").replace("0","") # Tuesday
+    weekday3 = (datetime.datetime.today() - datetime.timedelta(days=1)).strftime('%m/%d/%y').lstrip("0").replace("0","") # Wednesday
+    weekday4 = (datetime.datetime.today() + datetime.timedelta(days=1)).strftime('%m/%d/%y').lstrip("0").replace("0","") # Friday
+    week_l = [weekday1,weekday2,weekday3,today,weekday4] # List of dates this week
+if weekday_n == 4:                                                                                                       # If today is friday
+    weekday1 = (datetime.datetime.today() - datetime.timedelta(days=4)).strftime('%m/%d/%y').lstrip("0").replace("0","") # Monday
+    weekday2 = (datetime.datetime.today() - datetime.timedelta(days=3)).strftime('%m/%d/%y').lstrip("0").replace("0","") # Tuesday
+    weekday3 = (datetime.datetime.today() - datetime.timedelta(days=2)).strftime('%m/%d/%y').lstrip("0").replace("0","") # Wednesday
+    weekday4 = (datetime.datetime.today() - datetime.timedelta(days=1)).strftime('%m/%d/%y').lstrip("0").replace("0","") # Thursday
+    week_l = [weekday1,weekday2,weekday3,weekday4,today] # List of dates this week
+#------------------------------------
+# Filter Dataset by Dates of the week
+start_date = week_l[0]
+#end_date = week_l[-1]
+after_start = df_AP_S["Date"] >= start_date
+#before_end = df_AP_S["Date"] <= end_date
+#between = after_start & before_end
+filtered_dataset = df_AP_S.loc[after_start]
 #------------------------------------
 # SOMA Dataset                      #
 #------------------------------------
-PATH = pathlib.Path(__file__).parent
-DATA_PATH = PATH.joinpath("data").resolve()
 df_s = pd.read_csv(DATA_PATH.joinpath('SOMA.csv'))
 styles_s = []
 styles_s.append({
@@ -132,16 +183,47 @@ layout = html.Div(
         # Body
 
         # Soma Table
+        #html.Div(
+        #    className="SOMA", 
+        #    children=
+        #    [
+        #        html.P(className='table_title',
+        #               children=
+        #               [
+        #                   "SPortfolio"
+        #               ]),
+        #        dash_table.DataTable(
+        #            id='Soma-Table',
+        #            columns=[{"name": i,"id": i}for i in df_s.columns],
+        #            data=df_s.to_dict('records'),
+        #            style_data_conditional=styles_s,
+        #            style_cell = {'textAlign': 'center','border': '0.05px solid #5c8cbe'},
+        #            style_header={'backgroundColor':'#1D262F'}
+        #        )
+        #    ]
+        #),
+
+        # Asset Purchase Schedule Table
         html.Div(
-            className="SOMA", 
-            children=
+            className="AP_Schedule",
+            children = 
             [
+                html.P(className="APS_Title",
+                children = [
+                    "As Purchase Schedule"
+                ]),
                 dash_table.DataTable(
-                    id='Soma-Table',
-                    columns=[{"name": i,"id": i}for i in df_s.columns],
-                    data=df_s.to_dict('records'),
+                    id='AP-Schedule',
+                    columns=[{"name": i,"id": i}for i in df_AP_S.columns],
+                    data=df_AP_S.to_dict('records'),
                     style_data_conditional=styles_s,
-                    style_cell = {'textAlign': 'center','border': '0.05px solid #5c8cbe'},
+                    style_cell = {'whitespace': 'normal','height': 'auto','textAlign': 'center','border': '0.05px solid #5c8cbe'},
+                    #style_cell_conditional = [
+                    #    {'if': {'column_id': 'Security'},
+                    #    'width':'50%'},
+                    #    #{'if': {'column_id': 'Max Purchase Size'},
+                    #    #'width':'50%'},
+                    #],
                     style_header={'backgroundColor':'#1D262F'}
                 )
             ]
@@ -158,6 +240,19 @@ layout = html.Div(
                     n_intervals = 0
                 ),
                 dcc.Graph(id="soma-bargraph")
+            ]
+        ),
+        # Change Bargraph
+        html.Div(
+            className="Change_Graph",
+            children=
+            [
+                dcc.Interval(
+                    id="interval-component",
+                    interval=65000,
+                    n_intervals=0
+                ),
+                dcc.Graph(id="Change-Graph")
             ]
         ),
 
@@ -230,22 +325,6 @@ layout = html.Div(
                 dcc.Graph(id="AMBS-Graph")
             ]
         ),
-
-        # Change Bargraph
-        html.Div(
-            className="Change_Graph",
-            children=
-            [
-                dcc.Interval(
-                    id="interval-component",
-                    interval=65000,
-                    n_intervals=0
-                ),
-                dcc.Graph(id="Change-Graph")
-            ]
-        )
-
-
     ]
 )
 #------------------------------------
@@ -270,16 +349,16 @@ def update_graph_live(n):
     fig["layout"]["margin"] = {"t": 50, "l": 50, "b": 50, "r": 25}
     fig["layout"]["autosize"] = True
     fig["layout"]["height"] = 400
-    fig["layout"]["width"] = 1900
+    fig["layout"]["width"] = 500
     fig["layout"]["yaxis"]["gridwidth"] = 1
     fig["layout"]["yaxis"]["title"] = 'Value'
-    fig["layout"]["xaxis"]["title"] = 'Security'
+    fig["layout"]["xaxis"]["title"] = 'Date'
     fig["layout"]["yaxis"]["gridcolor"] = "#242E3F"
     fig["layout"]["xaxis"]["gridcolor"] = "#242E3F"
     fig["layout"].update(paper_bgcolor="#1D262F", plot_bgcolor="#1D262F")
     fig.update_yaxes(title_font=dict(color='#87B4E5'))
     fig.update_yaxes(title_font=dict(color='#87B4E5'))
-    fig.update_layout(title_text='Change in SOMA Holdings',title_x=0.5,
+    fig.update_layout(title_text='Change in SOMA Holdings (Weekly)',title_x=0.5,
     title_font_color='#87B4E5',yaxis=dict(color='#87B4E5'),xaxis=dict(color='#87B4E5'))
     return fig
 # Callback for AMBS Graph
@@ -300,10 +379,10 @@ def update_graph_live(n):
     fig["layout"]["margin"] = {"t": 50, "l": 50, "b": 50, "r": 25}
     fig["layout"]["autosize"] = True
     fig["layout"]["height"] = 400
-    fig["layout"]["width"] = 500
+    fig["layout"]["width"] = 450
     fig["layout"]["yaxis"]["gridwidth"] = 1
-    fig["layout"]["yaxis"]["title"] = 'Date'
-    fig["layout"]["xaxis"]["title"] = 'Value'
+    fig["layout"]["yaxis"]["title"] = 'Value'
+    fig["layout"]["xaxis"]["title"] = 'Date'
     fig["layout"]["yaxis"]["gridcolor"] = "#242E3F"
     fig["layout"]["xaxis"]["gridcolor"] = "#242E3F"
     fig["layout"].update(paper_bgcolor="#1D262F", plot_bgcolor="#1D262F")
@@ -324,7 +403,7 @@ def update_graph_live(n):
     data_sc = pd.read_csv(DATA_PATH.joinpath("SOMA_hist.csv"))
     # Plotting
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x=data_sc['Date'],y=data_sc['TIPS'],fill='tozeroy',line_color='#810f7c'))
+    fig.add_trace(go.Scatter(x=data_sc['Date'],y=data_sc['TIPS'],fill='tozeroy',line_color='#5c8cbe'))
     fig["layout"][
     "uirevision"
     ] = "The User is always right"  # Ensures zoom on graph is the same on update
@@ -332,10 +411,10 @@ def update_graph_live(n):
     fig["layout"]["margin"] = {"t": 50, "l": 50, "b": 50, "r": 25}
     fig["layout"]["autosize"] = True
     fig["layout"]["height"] = 400
-    fig["layout"]["width"] = 500
+    fig["layout"]["width"] = 450
     fig["layout"]["yaxis"]["gridwidth"] = 1
-    fig["layout"]["yaxis"]["title"] = 'Date'
-    fig["layout"]["xaxis"]["title"] = 'Value'
+    fig["layout"]["yaxis"]["title"] = 'Value'
+    fig["layout"]["xaxis"]["title"] = 'Date'
     fig["layout"]["yaxis"]["gridcolor"] = "#242E3F"
     fig["layout"]["xaxis"]["gridcolor"] = "#242E3F"
     fig["layout"].update(paper_bgcolor="#1D262F", plot_bgcolor="#1D262F")
@@ -356,7 +435,7 @@ def update_graph_live(n):
     data_sc = pd.read_csv(DATA_PATH.joinpath("SOMA_hist.csv"))
     # Plotting
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x=data_sc['Date'],y=data_sc['T-Bills'],fill='tozeroy',line_color='#5c8cbe'))
+    fig.add_trace(go.Scatter(x=data_sc['Date'],y=data_sc['T-Bills'],fill='tozeroy',line_color='#810f7c'))
     fig["layout"][
     "uirevision"
     ] = "The User is always right"  # Ensures zoom on graph is the same on update
@@ -364,16 +443,16 @@ def update_graph_live(n):
     fig["layout"]["margin"] = {"t": 50, "l": 50, "b": 50, "r": 25}
     fig["layout"]["autosize"] = True
     fig["layout"]["height"] = 400
-    fig["layout"]["width"] = 500
+    fig["layout"]["width"] = 450
     fig["layout"]["yaxis"]["gridwidth"] = 1
-    fig["layout"]["yaxis"]["title"] = 'Date'
-    fig["layout"]["xaxis"]["title"] = 'Value'
+    fig["layout"]["yaxis"]["title"] = 'Value'
+    fig["layout"]["xaxis"]["title"] = 'Date'
     fig["layout"]["yaxis"]["gridcolor"] = "#242E3F"
     fig["layout"]["xaxis"]["gridcolor"] = "#242E3F"
     fig["layout"].update(paper_bgcolor="#1D262F", plot_bgcolor="#1D262F")
     fig.update_yaxes(title_font=dict(color='#87B4E5'))
     fig.update_yaxes(title_font=dict(color='#87B4E5'))
-    fig.update_layout(title_text='T-Bills',title_x=0.5,
+    fig.update_layout(title_text='T-Bill Holdings',title_x=0.5,
     title_font_color='#87B4E5',yaxis=dict(color='#87B4E5'),xaxis=dict(color='#87B4E5'))
     return fig
 
@@ -387,7 +466,7 @@ def update_graph_live(n):
     data_sc = pd.read_csv(DATA_PATH.joinpath("SOMA_hist.csv"))
     # Plotting
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x=data_sc['Date'],y=data_sc['T-Notes & T-Bonds'],fill='tozeroy',line_color='#810f7c'))
+    fig.add_trace(go.Scatter(x=data_sc['Date'],y=data_sc['T-Notes & T-Bonds'],fill='tozeroy',line_color='#5c8cbe'))
     fig["layout"][
     "uirevision"
     ] = "The User is always right"  # Ensures zoom on graph is the same on updat
@@ -395,16 +474,16 @@ def update_graph_live(n):
     fig["layout"]["margin"] = {"t": 50, "l": 50, "b": 50, "r": 25}
     fig["layout"]["autosize"] = True
     fig["layout"]["height"] = 400
-    fig["layout"]["width"] = 500
+    fig["layout"]["width"] = 450
     fig["layout"]["yaxis"]["gridwidth"] = 1
-    fig["layout"]["yaxis"]["title"] = 'Date'
-    fig["layout"]["xaxis"]["title"] = 'Value'
+    fig["layout"]["yaxis"]["title"] = 'Value'
+    fig["layout"]["xaxis"]["title"] = 'Date'
     fig["layout"]["yaxis"]["gridcolor"] = "#242E3F"
     fig["layout"]["xaxis"]["gridcolor"] = "#242E3F"
     fig["layout"].update(paper_bgcolor="#1D262F", plot_bgcolor="#1D262F")
     fig.update_yaxes(title_font=dict(color='#87B4E5'))
     fig.update_yaxes(title_font=dict(color='#87B4E5'))
-    fig.update_layout(title_text='T-Notes & T-Bonds',title_x=0.5,
+    fig.update_layout(title_text='T-Note & T-Bond Holdings',title_x=0.5,
     title_font_color='#87B4E5',yaxis=dict(color='#87B4E5'),xaxis=dict(color='#87B4E5'))
     return fig
 
@@ -428,14 +507,14 @@ def update_graph_live(n):
     fig["layout"]["height"] = 400
     fig["layout"]["width"] = 500
     fig["layout"]["yaxis"]["gridwidth"] = 1
-    fig["layout"]["yaxis"]["title"] = 'Date'
-    fig["layout"]["xaxis"]["title"] = 'Value'
+    fig["layout"]["yaxis"]["title"] = 'Value'
+    fig["layout"]["xaxis"]["title"] = 'Date'
     fig["layout"]["yaxis"]["gridcolor"] = "#242E3F"
     fig["layout"]["xaxis"]["gridcolor"] = "#242E3F"
     fig["layout"].update(paper_bgcolor="#1D262F", plot_bgcolor="#1D262F")
     fig.update_yaxes(title_font=dict(color='#87B4E5'))
     fig.update_yaxes(title_font=dict(color='#87B4E5'))
-    fig.update_layout(title_text='Total SOMA Portfolio Holdings',title_x=0.5,
+    fig.update_layout(title_text='Total SOMA Holdings',title_x=0.5,
     title_font_color='#87B4E5',yaxis=dict(color='#87B4E5'),xaxis=dict(color='#87B4E5'))
     return fig
 

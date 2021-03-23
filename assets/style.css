@@ -853,52 +853,20 @@ margin-left: 25%;
   margin-top: -400px;
 }
 
+/*
 .SOMA{
   display: block;
   margin-left: 600px;
 }
 
-.soma_bargraph{
-  display: block;
-  margin-left: 925px;
-  margin-top: -350px;
-}
 
-.T-Notes_T-Bonds{
-  display: block;
-  margin-left: 1975px;
-  margin-top: -400px;
+.table_title{
+display: block;
+margin-left: 110px;
+color: #87B4E5;
 }
+*/
 
-.Total_Graph{
-  display: block;
-  margin-left: 1450px;
-  margin-top: -400px;
-}
-
-.Bills_Graph{
-  display: block;
-  margin-left: 600px;
-  margin-top: 25px;
-}
-
-.Tips_Graph{
-  display: block;
-  margin-left: 1125px;
-  margin-top: -400px;
-}
-
-.AMBS_Graph{
-  display: block;
-  margin-left: 1650px;
-  margin-top: -400px;
-}
-
-.Change_Graph{
-  display: block;
-  margin-left: 600px;
-  margin-top: 25px;
-}
 
 .USTC-Chart{
 display: flex;
@@ -1098,10 +1066,63 @@ position:relative;
 }
 
 
-button{
+.button{
 color: #EDEDED;
 margin: 0px;
 border-radius: 0px;
+}
+
+.AP_Schedule{
+  display: block;
+  margin-left: 600px;
+}
+
+.APS_Title{
+  display: block;
+  margin-left: 80px;
+  color: #87B4E5;
+}
+
+.soma_bargraph{
+  display: block;
+  margin-left: 1000px;
+  margin-top: -450px;
+}
+
+.Total_Graph{
+  display: block;
+  margin-left: 1525px;
+  margin-top: -875px;
+}
+
+.T-Notes_T-Bonds{
+  display: block;
+  margin-left: 600px;
+  margin-top: 75px;
+}
+
+.Bills_Graph{
+  display: block;
+  margin-left: 1075px;
+  margin-top: 75px;
+}
+
+.Tips_Graph{
+  display: block;
+  margin-left: 1550px;
+  margin-top: -400px;
+}
+
+.AMBS_Graph{
+  display: block;
+  margin-left: 2025px;
+  margin-top: -400px;
+}
+
+.Change_Graph{
+  display: block;
+  margin-left: 2050px;
+  margin-top: -400px;
 }
 
 
