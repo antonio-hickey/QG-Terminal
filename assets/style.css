@@ -854,9 +854,50 @@ margin-left: 25%;
 }
 
 .SOMA{
-  display: inline-block;
-  margin-left: 50px;
-  margin-top: -25px;
+  display: block;
+  margin-left: 600px;
+}
+
+.soma_bargraph{
+  display: block;
+  margin-left: 925px;
+  margin-top: -350px;
+}
+
+.T-Notes_T-Bonds{
+  display: block;
+  margin-left: 1975px;
+  margin-top: -400px;
+}
+
+.Total_Graph{
+  display: block;
+  margin-left: 1450px;
+  margin-top: -400px;
+}
+
+.Bills_Graph{
+  display: block;
+  margin-left: 600px;
+  margin-top: 25px;
+}
+
+.Tips_Graph{
+  display: block;
+  margin-left: 1125px;
+  margin-top: -400px;
+}
+
+.AMBS_Graph{
+  display: block;
+  margin-left: 1650px;
+  margin-top: -400px;
+}
+
+.Change_Graph{
+  display: block;
+  margin-left: 600px;
+  margin-top: 25px;
 }
 
 .USTC-Chart{

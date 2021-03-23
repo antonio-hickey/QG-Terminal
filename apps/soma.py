@@ -130,11 +130,12 @@ layout = html.Div(
             ],
         ),
         # Body
+
+        # Soma Table
         html.Div(
             className="SOMA", 
             children=
             [
-                html.P(className='Soma-Title',children=["SOMA Portfolio"]),
                 dash_table.DataTable(
                     id='Soma-Table',
                     columns=[{"name": i,"id": i}for i in df_s.columns],
@@ -145,11 +146,330 @@ layout = html.Div(
                 )
             ]
         ),
+
+        # Soma bargraph
+        html.Div(
+            className = "soma_bargraph", 
+            children = 
+            [
+                dcc.Interval(
+                    id="interval-component",
+                    interval=65000,
+                    n_intervals = 0
+                ),
+                dcc.Graph(id="soma-bargraph")
+            ]
+        ),
+
+        # T-Notes & Bonds Area Graph
+        html.Div(
+            className="T-Notes_T-Bonds",
+            children=
+            [
+                dcc.Interval(
+                    id="interval-component",
+                    interval=65000,
+                    n_intervals = 0
+                ),
+                dcc.Graph(id="T_Notes_T_Bonds")
+            ]
+        ),
+
+        # Total Area Graph
+        html.Div(
+            className="Total_Graph",
+            children=
+            [
+                dcc.Interval(
+                    id="interval-component",
+                    interval=65000,
+                    n_intervals = 0
+                ),
+                dcc.Graph(id="Total-Graph")
+            ]
+        ),
+
+        # T Bills Area Graph
+        html.Div(
+            className="Bills_Graph",
+            children =
+            [
+                dcc.Interval(
+                    id="interval-component",
+                    interval=65000,
+                    n_intervals=0
+                ),
+                dcc.Graph(id="Bills-Graph")
+            ]
+        ),
+
+        # TIPS Area Graph
+        html.Div(
+            className="Tips_Graph",
+            children =
+            [
+                dcc.Interval(
+                    id="interval-component",
+                    interval = 65000,
+                    n_intervals =0
+                ),
+                dcc.Graph(id="Tips-Graph")
+            ]
+        ),
+
+        # Agency Mortgage-Backed Securities
+        html.Div(
+            className="AMBS_Graph",
+            children=
+            [
+                dcc.Interval(
+                    id="interval_component",
+                    interval=65000,
+                    n_intervals=0
+                ),
+                dcc.Graph(id="AMBS-Graph")
+            ]
+        ),
+
+        # Change Bargraph
+        html.Div(
+            className="Change_Graph",
+            children=
+            [
+                dcc.Interval(
+                    id="interval-component",
+                    interval=65000,
+                    n_intervals=0
+                ),
+                dcc.Graph(id="Change-Graph")
+            ]
+        )
+
+
     ]
 )
 #------------------------------------
 # Dynamic Callbacks                 #
 #------------------------------------
+
+# Callback for change bargraph
+@app.callback(Output('Change-Graph','figure'),
+            [Input('interval-component','n_intervals')])
+def update_graph_live(n):
+    # Import dataset
+    PATH = pathlib.Path(__file__).parent
+    DATA_PATH = PATH.joinpath("data").resolve()
+    data_sc = pd.read_csv(DATA_PATH.joinpath("SOMA_hist.csv"))
+    # Plotting
+    fig = px.bar(data_sc,x='Date',y='Change',color_discrete_sequence=['#5c8cbe'])
+    fig["layout"][
+    "uirevision"
+    ] = "The User is always right"  # Ensures zoom on graph is the same on updat
+    fig["layout"]["xaxis"]["rangeslider"]["visible"] = False
+    fig["layout"]["margin"] = {"t": 50, "l": 50, "b": 50, "r": 25}
+    fig["layout"]["autosize"] = True
+    fig["layout"]["height"] = 400
+    fig["layout"]["width"] = 1900
+    fig["layout"]["yaxis"]["gridwidth"] = 1
+    fig["layout"]["yaxis"]["title"] = 'Value'
+    fig["layout"]["xaxis"]["title"] = 'Security'
+    fig["layout"]["yaxis"]["gridcolor"] = "#242E3F"
+    fig["layout"]["xaxis"]["gridcolor"] = "#242E3F"
+    fig["layout"].update(paper_bgcolor="#1D262F", plot_bgcolor="#1D262F")
+    fig.update_yaxes(title_font=dict(color='#87B4E5'))
+    fig.update_yaxes(title_font=dict(color='#87B4E5'))
+    fig.update_layout(title_text='Change in SOMA Holdings',title_x=0.5,
+    title_font_color='#87B4E5',yaxis=dict(color='#87B4E5'),xaxis=dict(color='#87B4E5'))
+    return fig
+# Callback for AMBS Graph
+@app.callback(Output('AMBS-Graph','figure'),
+             [Input('interval_component', 'n_intervals')])
+def update_graph_live(n):
+    # Import Dataset
+    PATH = pathlib.Path(__file__).parent
+    DATA_PATH = PATH.joinpath("data").resolve()
+    data_sc = pd.read_csv(DATA_PATH.joinpath("SOMA_hist.csv"))
+    # Plotting
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=data_sc['Date'],y=data_sc['AMBS'],fill='tozeroy',line_color='#810f7c'))
+    fig["layout"][
+    "uirevision"
+    ] = "The User is always right"  # Ensures zoom on graph is the same on update
+    fig["layout"]["xaxis"]["rangeslider"]["visible"] = False
+    fig["layout"]["margin"] = {"t": 50, "l": 50, "b": 50, "r": 25}
+    fig["layout"]["autosize"] = True
+    fig["layout"]["height"] = 400
+    fig["layout"]["width"] = 500
+    fig["layout"]["yaxis"]["gridwidth"] = 1
+    fig["layout"]["yaxis"]["title"] = 'Date'
+    fig["layout"]["xaxis"]["title"] = 'Value'
+    fig["layout"]["yaxis"]["gridcolor"] = "#242E3F"
+    fig["layout"]["xaxis"]["gridcolor"] = "#242E3F"
+    fig["layout"].update(paper_bgcolor="#1D262F", plot_bgcolor="#1D262F")
+    fig.update_yaxes(title_font=dict(color='#87B4E5'))
+    fig.update_yaxes(title_font=dict(color='#87B4E5'))
+    fig.update_layout(title_text='AMBS Holdings',title_x=0.5,
+    title_font_color='#87B4E5',yaxis=dict(color='#87B4E5'),xaxis=dict(color='#87B4E5'))
+    return fig
+
+
+# Callback for Tips Graph
+@app.callback(Output('Tips-Graph', 'figure'),
+              [Input('interval-component','n_intervals')])
+def update_graph_live(n):
+    # Import Dataset
+    PATH = pathlib.Path(__file__).parent
+    DATA_PATH = PATH.joinpath("data").resolve()
+    data_sc = pd.read_csv(DATA_PATH.joinpath("SOMA_hist.csv"))
+    # Plotting
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=data_sc['Date'],y=data_sc['TIPS'],fill='tozeroy',line_color='#810f7c'))
+    fig["layout"][
+    "uirevision"
+    ] = "The User is always right"  # Ensures zoom on graph is the same on update
+    fig["layout"]["xaxis"]["rangeslider"]["visible"] = False
+    fig["layout"]["margin"] = {"t": 50, "l": 50, "b": 50, "r": 25}
+    fig["layout"]["autosize"] = True
+    fig["layout"]["height"] = 400
+    fig["layout"]["width"] = 500
+    fig["layout"]["yaxis"]["gridwidth"] = 1
+    fig["layout"]["yaxis"]["title"] = 'Date'
+    fig["layout"]["xaxis"]["title"] = 'Value'
+    fig["layout"]["yaxis"]["gridcolor"] = "#242E3F"
+    fig["layout"]["xaxis"]["gridcolor"] = "#242E3F"
+    fig["layout"].update(paper_bgcolor="#1D262F", plot_bgcolor="#1D262F")
+    fig.update_yaxes(title_font=dict(color='#87B4E5'))
+    fig.update_yaxes(title_font=dict(color='#87B4E5'))
+    fig.update_layout(title_text='TIPS Holdings',title_x=0.5,
+    title_font_color='#87B4E5',yaxis=dict(color='#87B4E5'),xaxis=dict(color='#87B4E5'))
+    return fig
+
+
+# Callback for T-Bills
+@app.callback(Output('Bills-Graph','figure'),
+              [Input('interval-component','n_intervals')])
+def update_graph_live(n):
+    # Import Dataset
+    PATH = pathlib.Path(__file__).parent
+    DATA_PATH = PATH.joinpath("data").resolve()
+    data_sc = pd.read_csv(DATA_PATH.joinpath("SOMA_hist.csv"))
+    # Plotting
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=data_sc['Date'],y=data_sc['T-Bills'],fill='tozeroy',line_color='#5c8cbe'))
+    fig["layout"][
+    "uirevision"
+    ] = "The User is always right"  # Ensures zoom on graph is the same on update
+    fig["layout"]["xaxis"]["rangeslider"]["visible"] = False
+    fig["layout"]["margin"] = {"t": 50, "l": 50, "b": 50, "r": 25}
+    fig["layout"]["autosize"] = True
+    fig["layout"]["height"] = 400
+    fig["layout"]["width"] = 500
+    fig["layout"]["yaxis"]["gridwidth"] = 1
+    fig["layout"]["yaxis"]["title"] = 'Date'
+    fig["layout"]["xaxis"]["title"] = 'Value'
+    fig["layout"]["yaxis"]["gridcolor"] = "#242E3F"
+    fig["layout"]["xaxis"]["gridcolor"] = "#242E3F"
+    fig["layout"].update(paper_bgcolor="#1D262F", plot_bgcolor="#1D262F")
+    fig.update_yaxes(title_font=dict(color='#87B4E5'))
+    fig.update_yaxes(title_font=dict(color='#87B4E5'))
+    fig.update_layout(title_text='T-Bills',title_x=0.5,
+    title_font_color='#87B4E5',yaxis=dict(color='#87B4E5'),xaxis=dict(color='#87B4E5'))
+    return fig
+
+# Callback for T-Notes & T-Bonds Area Graph
+@app.callback(Output('T_Notes_T_Bonds','figure'),
+              [Input('interval-component','n_intervals')])
+def update_graph_live(n):
+    # Import Dataset
+    PATH = pathlib.Path(__file__).parent
+    DATA_PATH = PATH.joinpath("data").resolve()
+    data_sc = pd.read_csv(DATA_PATH.joinpath("SOMA_hist.csv"))
+    # Plotting
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=data_sc['Date'],y=data_sc['T-Notes & T-Bonds'],fill='tozeroy',line_color='#810f7c'))
+    fig["layout"][
+    "uirevision"
+    ] = "The User is always right"  # Ensures zoom on graph is the same on updat
+    fig["layout"]["xaxis"]["rangeslider"]["visible"] = False
+    fig["layout"]["margin"] = {"t": 50, "l": 50, "b": 50, "r": 25}
+    fig["layout"]["autosize"] = True
+    fig["layout"]["height"] = 400
+    fig["layout"]["width"] = 500
+    fig["layout"]["yaxis"]["gridwidth"] = 1
+    fig["layout"]["yaxis"]["title"] = 'Date'
+    fig["layout"]["xaxis"]["title"] = 'Value'
+    fig["layout"]["yaxis"]["gridcolor"] = "#242E3F"
+    fig["layout"]["xaxis"]["gridcolor"] = "#242E3F"
+    fig["layout"].update(paper_bgcolor="#1D262F", plot_bgcolor="#1D262F")
+    fig.update_yaxes(title_font=dict(color='#87B4E5'))
+    fig.update_yaxes(title_font=dict(color='#87B4E5'))
+    fig.update_layout(title_text='T-Notes & T-Bonds',title_x=0.5,
+    title_font_color='#87B4E5',yaxis=dict(color='#87B4E5'),xaxis=dict(color='#87B4E5'))
+    return fig
+
+# Callback for Total Area Graph
+@app.callback(Output('Total-Graph','figure'),
+              [Input('interval-component','n_intervals')])
+def update_graph_live(n):
+    # Import Dataset
+    PATH = pathlib.Path(__file__).parent
+    DATA_PATH = PATH.joinpath("data").resolve()
+    data_sc = pd.read_csv(DATA_PATH.joinpath("SOMA_hist.csv"))
+    # Plotting
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=data_sc['Date'],y=data_sc['Total'],fill='tozeroy',line_color='#810f7c'))
+    fig["layout"][
+    "uirevision"
+    ] = "The User is always right"  # Ensures zoom on graph is the same on update
+    fig["layout"]["xaxis"]["rangeslider"]["visible"] = False
+    fig["layout"]["margin"] = {"t": 50, "l": 50, "b": 50, "r": 25}
+    fig["layout"]["autosize"] = True
+    fig["layout"]["height"] = 400
+    fig["layout"]["width"] = 500
+    fig["layout"]["yaxis"]["gridwidth"] = 1
+    fig["layout"]["yaxis"]["title"] = 'Date'
+    fig["layout"]["xaxis"]["title"] = 'Value'
+    fig["layout"]["yaxis"]["gridcolor"] = "#242E3F"
+    fig["layout"]["xaxis"]["gridcolor"] = "#242E3F"
+    fig["layout"].update(paper_bgcolor="#1D262F", plot_bgcolor="#1D262F")
+    fig.update_yaxes(title_font=dict(color='#87B4E5'))
+    fig.update_yaxes(title_font=dict(color='#87B4E5'))
+    fig.update_layout(title_text='Total SOMA Portfolio Holdings',title_x=0.5,
+    title_font_color='#87B4E5',yaxis=dict(color='#87B4E5'),xaxis=dict(color='#87B4E5'))
+    return fig
+
+
+# Callback for soma bargraph
+@app.callback(Output('soma-bargraph', 'figure'),
+              [Input('interval-component', 'n_intervals')])
+def update_soma_change(n):
+    # Import dataset
+    PATH = pathlib.Path(__file__).parent
+    DATA_PATH = PATH.joinpath("data").resolve()
+    data_sc = pd.read_csv(DATA_PATH.joinpath("SOMA.csv"))
+    data_sc = data_sc[:7]
+    # Plotting
+    fig = px.bar(data_sc,x='Security',y='Value',color_discrete_sequence=['#5c8cbe'])
+    fig["layout"][
+    "uirevision"
+    ] = "The User is always right"  # Ensures zoom on graph is the same on updat
+    fig["layout"]["xaxis"]["rangeslider"]["visible"] = False
+    fig["layout"]["margin"] = {"t": 50, "l": 50, "b": 50, "r": 25}
+    fig["layout"]["autosize"] = True
+    fig["layout"]["height"] = 400
+    fig["layout"]["width"] = 500
+    fig["layout"]["yaxis"]["gridwidth"] = 1
+    fig["layout"]["yaxis"]["title"] = 'Value'
+    fig["layout"]["xaxis"]["title"] = 'Security'
+    fig["layout"]["yaxis"]["gridcolor"] = "#242E3F"
+    fig["layout"]["xaxis"]["gridcolor"] = "#242E3F"
+    fig["layout"].update(paper_bgcolor="#1D262F", plot_bgcolor="#1D262F")
+    fig.update_yaxes(title_font=dict(color='#87B4E5'))
+    fig.update_yaxes(title_font=dict(color='#87B4E5'))
+    fig.update_layout(title_text='Federal Reserve SOMA Portfolio',title_x=0.5,
+    title_font_color='#87B4E5',yaxis=dict(color='#87B4E5'),xaxis=dict(color='#87B4E5'))
+    return fig
+
 
 # Callback function to update command bar
 @app.callback(Output("output4", "children"), [Input("input4", "value")])

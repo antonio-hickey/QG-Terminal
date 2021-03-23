@@ -39,7 +39,6 @@ change = driver.find_element_by_css_selector("tr.ng-star-inserted:nth-child(9) >
 
 # Export data to csv
 filename = "SOMA.csv"
-filename_hist = "SOMA_hist.csv" 
 date = dt.today().strftime('%Y-%m-%d')
 t_bills_r = [date,"T-Bills",t_bills.text]
 t_nb_r = [date,"T-Notes & T-Bonds",t_nb.text]
@@ -61,10 +60,12 @@ with open(filename,'w') as csvfile:
         csvwriter.writerow(row)
 
 # Historical Dataset
+filename_hist = "SOMA_hist.csv" 
+row_hist = [date,t_bills.text,t_nb.text,t_frn.text,t_tips.text,t_FAS.text,t_AMBS.text,t_CMBS.text,soma.text,change.text]
+
 with open(filename_hist,'a') as csvfile:
     csvwriter = csv.writer(csvfile)
-    for row in rows:
-        csvwriter.writerow(row)
+    csvwriter.writerow(row_hist)
 #--------------------------------------------------------------------------------------------------------
 # Close Driver
 driver.quit()
