@@ -252,6 +252,7 @@ layout = html.Div(
 # Dynamic Callbacks                 #
 #------------------------------------
 
+
 # Callback for change bargraph
 @app.callback(Output('Change-Graph','figure'),
             [Input('interval-component','n_intervals')])
