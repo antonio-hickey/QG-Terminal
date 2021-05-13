@@ -66,6 +66,7 @@ def bot():
     yr30 = driver.find_element_by_css_selector('.BasicTable-tableBody > tr:nth-child(11) > td:nth-child(2)')
     yr30 = yr30.text
 
+<<<<<<< HEAD
     # Data
     date = (dt.datetime.now().strftime("%Y-%m-%d")) 
     row = [date,mo1,mo3,mo6,yr1,yr2,yr3,yr5,yr7,yr10,yr20,yr30]
@@ -76,8 +77,48 @@ def bot():
     with open(filename,'a') as csvfile:
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(row)
+=======
+    # Columns
+    c = ['Duration','Yeild']
+
+    # Data
+    d1 = ['1 Month',mo1]
+    d2 = ['3 Month',mo3]
+    d3 = ['6 Month',mo6]
+    d4 = ['1 Year',yr1]
+    d5 = ['2 Year',yr2]
+    d6 = ['3 Year',yr3]
+    d7 = ['5 Year',yr5]
+    d8 = ['7 Year',yr7]
+    d9 = ['10 Year',yr10]
+    d10 = ['20 Year',yr20]
+    d11 = ['30 Year',yr30]
+
+    # Write dataset
+    os.chdir(os.path.dirname(__file__))
+    date = (dt.datetime.now().strftime("%Y-%m-%d"))
+    filename = (date + ' USTCurve.csv')
+    with open(filename,'w') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        csvwriter.writerow(c)
+        csvwriter.writerow(d1)
+        csvwriter.writerow(d2)
+        csvwriter.writerow(d3)
+        csvwriter.writerow(d4)
+        csvwriter.writerow(d5)
+        csvwriter.writerow(d6)
+        csvwriter.writerow(d7)
+        csvwriter.writerow(d8)
+        csvwriter.writerow(d9)
+        csvwriter.writerow(d10)
+        csvwriter.writerow(d11)
+>>>>>>> 9c4a0e813216f9b0e116d8e6b1d632023c29493f
     driver.quit()
 #--------------------------------------------------------------------------------------------------------
 # Calling Function
 bot()
+<<<<<<< HEAD
 #--------------------------------------------------------------------------------------------------------
+=======
+#--------------------------------------------------------------------------------------------------------
+>>>>>>> 9c4a0e813216f9b0e116d8e6b1d632023c29493f

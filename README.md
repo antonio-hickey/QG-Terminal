@@ -1,9 +1,21 @@
 # QG-Terminal
-An open source finance/trading dashboard, By defualt this project is tailored to fit my own personal needs for keeping up with financial markets. This platform is mainly python and CSS, making it very easy to customize it to suit your own desired use with little python and web knowledge.
+Open Source finance/trading dashboard (python web app). By defualt this project is tailored to fit my own personal needs for keeping up with financial markets. This platform is mainly Python and CSS, making it very easy to customize it to suit your own desired use with little python and web knowledge.
+
+
+![alt text](https://i.ibb.co/Cmy092w/2021-04-21-12-48.png)
+
 
 # Data
-You have to source your own market data as it's expensive :( and this is a free project. 
-However I have scavenged many free resources and created bots to keep it updated this includes news, economic data, interest rates, and many more
+All open source datasets with mining scripts to keep the datasets up to date.
+  - If using linux use crontab jobs to automatically run the data mining script's in the background
+     - `crontab -e`
+     - `** ** * * * /usr/bin/env python3 /QG-Terminal/Apps/data/USTCurve_Miner.py`
+     - ...
+     - `ctrl + x`
+     - `shft + Y`
+     - Output:
+     - `crontab: installing new crontab` Done
+  - If using windows use task scheduler to automatically run data mining script's in the background
 
 # Contact for help
 email: antoniohickey99@gmial.com
