@@ -6,16 +6,7 @@ Open Source finance/trading dashboard (python web app). By defualt this project 
 
 
 # Data
-All open source datasets with mining scripts to keep the datasets up to date.
-  - If using linux use crontab jobs to automatically run the data mining script's in the background
-     - `crontab -e`
-     - `** ** * * * /usr/bin/env python3 /QG-Terminal/Apps/data/USTCurve_Miner.py`
-     - ...
-     - `ctrl + x`
-     - `shft + Y`
-     - Output:
-     - `crontab: installing new crontab` Done
-  - If using windows use task scheduler to automatically run data mining script's in the background
+All open source datasets, but if you have your own data it's easy to plug it in.
 
 # Contact for help
 email: antoniohickey99@gmial.com
