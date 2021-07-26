@@ -66,6 +66,18 @@ def bot():
     yr30 = driver.find_element_by_css_selector('.BasicTable-tableBody > tr:nth-child(11) > td:nth-child(2)')
     yr30 = yr30.text
 
+<<<<<<< HEAD
+    # Data
+    date = (dt.datetime.now().strftime("%Y-%m-%d")) 
+    row = [date,mo1,mo3,mo6,yr1,yr2,yr3,yr5,yr7,yr10,yr20,yr30]
+
+    # Write dataset
+    os.chdir(os.path.dirname(__file__))
+    filename = ('USTCurve.csv')
+    with open(filename,'a') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        csvwriter.writerow(row)
+=======
     # Columns
     c = ['Duration','Yeild']
 
@@ -100,8 +112,13 @@ def bot():
         csvwriter.writerow(d9)
         csvwriter.writerow(d10)
         csvwriter.writerow(d11)
+>>>>>>> 9c4a0e813216f9b0e116d8e6b1d632023c29493f
     driver.quit()
 #--------------------------------------------------------------------------------------------------------
 # Calling Function
 bot()
+<<<<<<< HEAD
 #--------------------------------------------------------------------------------------------------------
+=======
+#--------------------------------------------------------------------------------------------------------
+>>>>>>> 9c4a0e813216f9b0e116d8e6b1d632023c29493f

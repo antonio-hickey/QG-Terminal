@@ -26,8 +26,12 @@ driver = webdriver.Chrome(ChromeDriverManager().install(),options=options)
 # Request Page
 driver.get('https://www.treasurydirect.gov/instit/instit.htm?upcoming')
 time.sleep(3) # wait 3 seconds
+<<<<<<< HEAD
+#--------------------------------------------------------------------------------------------------------
+=======
 
 
+>>>>>>> 9c4a0e813216f9b0e116d8e6b1d632023c29493f
 # Define Target Data
 
 # Bills Table
@@ -42,7 +46,11 @@ if bills_n_rows > 1:
         date = driver.find_element_by_css_selector("#institTableBillsUpcoming > tbody:nth-child(2) > tr:nth-child({}) > td:nth-child(6)".format(j + 1))
         bills_r.append([maturity.text,cusip.text,amount.text,date.text])
 
+<<<<<<< HEAD
+# Notes Table
+=======
 ## Notes Table
+>>>>>>> 9c4a0e813216f9b0e116d8e6b1d632023c29493f
 notes_n_rows = driver.find_elements_by_xpath("/html/body/div[1]/div/section/div/div[2]/table[2]/tbody/tr")
 notes_n_rows = len(notes_n_rows)
 notes_r = []
@@ -54,7 +62,11 @@ if notes_n_rows > 1:
         date = driver.find_element_by_css_selector("#institTableNotesUpcoming > tbody:nth-child(2) > tr:nth-child({}) > td:nth-child(6)".format(j + 1))
         notes_r.append([maturity.text,cusip.text,amount.text,date.text])
 
+<<<<<<< HEAD
+# Bonds Table
+=======
 ## Bonds Table
+>>>>>>> 9c4a0e813216f9b0e116d8e6b1d632023c29493f
 bonds_n_rows = driver.find_elements_by_xpath("/html/body/div[1]/div/section/div/div[2]/table[3]/tbody/tr")
 bonds_n_rows = driver.find_elements_by_xpath("/html/body/div[1]/div/section/div/div[2]/table[2]/tbody/tr")
 bonds_n_rows = len(bonds_n_rows)
@@ -67,7 +79,11 @@ if bonds_n_rows > 1:
         date = driver.find_element_by_css_selector("#institTableBondsUpcoming > tbody:nth-child(2) > tr:nth-child({}) > td:nth-child(6)".format(j + 1))
         bonds_r.append([maturity.text,cusip.text,amount.text,date.text])
 
+<<<<<<< HEAD
+# TIPS Table
+=======
 ## TIPS Table
+>>>>>>> 9c4a0e813216f9b0e116d8e6b1d632023c29493f
 tips_n_rows = driver.find_elements_by_xpath("/html/body/div[1]/div/section/div/div[2]/table[4]/tbody/tr")
 tips_n_rows = driver.find_elements_by_xpath("/html/body/div[1]/div/section/div/div[2]/table[2]/tbody/tr")
 tips_n_rows = len(tips_n_rows)
@@ -80,7 +96,11 @@ if tips_n_rows > 1:
         date = driver.find_element_by_css_selector("#institTableTipsUpcoming > tbody:nth-child(2) > tr:nth-child({}) > td:nth-child(6)".format(j + 1))
         tips_r.append([maturity.text,cusip.text,amount.text,date.text])
 
+<<<<<<< HEAD
+# FRNs Table 
+=======
 ## FRNs Table 
+>>>>>>> 9c4a0e813216f9b0e116d8e6b1d632023c29493f
 frn_n_rows = driver.find_elements_by_xpath("/html/body/div[1]/div/section/div/div[2]/table[5]/tbody/tr")
 frn_n_rows = driver.find_elements_by_xpath("/html/body/div[1]/div/section/div/div[2]/table[2]/tbody/tr")
 frn_n_rows = len(frn_n_rows)
@@ -93,8 +113,11 @@ if frn_n_rows > 1:
         date = driver.find_element_by_css_selector("#institTableFrnsUpcoming > tbody:nth-child(2) > tr:nth-child({}) > td:nth-child(6)".format(j + 1))
         frn_r.append([maturity.text,cusip.text,amount.text,date.text])
 
+<<<<<<< HEAD
+=======
 
 
+>>>>>>> 9c4a0e813216f9b0e116d8e6b1d632023c29493f
 # Export data to csv
 columns = ["Maturity","CUISP","Amount","Date"]
 os.chdir(os.path.dirname(__file__))
